@@ -21,7 +21,10 @@
   }
 
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
+  html{
+    scroll-behavior:smooth;
+    overflow-x: hidden; /* This forces Chrome DevTools to clip the hidden menu */
+    }
   body{
     background:var(--wool);
     color:var(--ink);
@@ -142,8 +145,10 @@
   /* ---------- HERO ---------- */
   .hero{
     position:relative; min-height:100svh;
-    display:flex; align-items:flex-end;
+    display:flex; 
+    flex-direction: column; /* Replaces align-items: flex-end */
     color:var(--white);
+    padding-top: 120px; /* Gives the header safe breathing room */
     padding-bottom:clamp(50px,8vw,96px);
     isolation:isolate;
   }
@@ -160,7 +165,10 @@
     opacity: 1;
     z-index: -2; /* Bring active slightly above fading out layers */
   }
-  .hero-inner{width:100%;}
+  .hero-inner{
+    width:100%;
+    margin-top: auto; /* Pushes the text block safely to the bottom */
+  }
   .hero-tag{
     font-family:var(--mono); font-size:0.78rem; letter-spacing:0.14em;
     text-transform:uppercase; color:var(--straw); margin-bottom:20px;
@@ -494,6 +502,29 @@
     .contact-layout{grid-template-columns:1fr;}
     .routes-panel{grid-template-columns:1fr;}
     .footer-top{grid-template-columns:1fr 1fr;}
+    .todo-banner{display:none;}
+    /* Force links to be light when the menu is actively open and scrolled */
+    header.solid nav.primary-nav.open a {color: var(--wool) !important;}
+
+     /* Force the hamburger icon to be light when the menu is actively open and scrolled */
+    header.solid .menu-toggle[aria-expanded="true"] span {background: var(--white) !important;}
+    header.solid:has(.primary-nav.open) {
+    backdrop-filter: none !important;
+  }
+  /* 1. Keep links light inside the mobile menu at all times */
+    header.solid nav.primary-nav a {
+    color: var(--wool) !important;
+    }
+
+  /* 2. Tie the backdrop-filter removal to a dedicated delayed class */
+    header.solid.menu-active {
+    backdrop-filter: none !important;
+    }
+
+  /* 3. Keep the hamburger icon light only when actively open */
+    header.solid .menu-toggle[aria-expanded="true"] span {
+    background: var(--white) !important;
+    }
   }
   @media (max-width:600px){
     .cardgrid{grid-template-columns:1fr;}
@@ -502,6 +533,7 @@
     .hero-facts{gap:28px;}
     .footer-top{grid-template-columns:1fr;}
     .section-head{align-items:flex-start;}
+    .nav-cta .btn-primary {display: none;}
   }
 
   @media (prefers-reduced-motion: reduce){
